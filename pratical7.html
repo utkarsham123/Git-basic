@@ -1,0 +1,768 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Interactive FAQ Section</title>
+
+
+    <style>
+
+        /* =================================
+           BASIC RESET
+        ================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        /* =================================
+           BODY
+        ================================= */
+
+        body {
+            font-family: Arial, sans-serif;
+
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 25px;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    #6366f1,
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at bottom right,
+                    #ec4899,
+                    transparent 30%
+                ),
+                linear-gradient(
+                    135deg,
+                    #0f172a,
+                    #312e81
+                );
+        }
+
+
+        /* =================================
+           MAIN FAQ CONTAINER
+        ================================= */
+
+        .faq-container {
+            width: 100%;
+            max-width: 750px;
+
+            padding: 40px;
+
+            background: rgba(255, 255, 255, 0.96);
+
+            border-radius: 25px;
+
+            box-shadow:
+                0 25px 60px
+                rgba(0, 0, 0, 0.35);
+
+            animation: slideIn 0.7s ease;
+        }
+
+
+        /* =================================
+           ANIMATION
+        ================================= */
+
+        @keyframes slideIn {
+
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+
+        /* =================================
+           HEADER
+        ================================= */
+
+        .heading {
+            text-align: center;
+
+            margin-bottom: 30px;
+        }
+
+
+        .icon {
+            width: 70px;
+            height: 70px;
+
+            margin: 0 auto 15px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #9333ea
+                );
+
+            font-size: 32px;
+
+            box-shadow:
+                0 10px 25px
+                rgba(79, 70, 229, 0.35);
+
+            transition: 0.3s;
+        }
+
+
+        .icon:hover {
+            transform: scale(1.08)
+                       rotate(5deg);
+        }
+
+
+        .heading h1 {
+            color: #111827;
+
+            font-size: 30px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .heading p {
+            color: #64748b;
+
+            font-size: 15px;
+        }
+
+
+        /* =================================
+           FAQ BOX
+        ================================= */
+
+        .faq {
+            margin-bottom: 15px;
+
+            background: white;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 15px;
+
+            overflow: hidden;
+
+            transition: 0.3s;
+        }
+
+
+        .faq:hover {
+            border-color: #818cf8;
+
+            box-shadow:
+                0 8px 20px
+                rgba(99, 102, 241, 0.12);
+        }
+
+
+        /* =================================
+           QUESTION
+        ================================= */
+
+        .question {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 20px;
+
+            cursor: pointer;
+
+            color: #1e293b;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+
+        .question:hover {
+            background: #f5f3ff;
+
+            color: #4f46e5;
+        }
+
+
+        /* =================================
+           PLUS ICON
+        ================================= */
+
+        .plus {
+            width: 32px;
+            height: 32px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 50%;
+
+            background: #eef2ff;
+
+            color: #4f46e5;
+
+            font-size: 23px;
+
+            transition: 0.3s;
+        }
+
+
+        /* =================================
+           ANSWER - COLLAPSED
+        ================================= */
+
+        .answer {
+            max-height: 0;
+
+            overflow: hidden;
+
+            opacity: 0;
+
+            background: #f8fafc;
+
+            transition:
+                max-height 0.4s ease,
+                opacity 0.3s ease;
+        }
+
+
+        .answer p {
+            padding: 0 20px 20px;
+
+            color: #64748b;
+
+            font-size: 15px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =================================
+           ANSWER - ACTIVE
+        ================================= */
+
+        .answer.active {
+            max-height: 300px;
+
+            opacity: 1;
+        }
+
+
+        /* =================================
+           PLUS ICON ROTATION
+        ================================= */
+
+        .question.active .plus {
+            transform: rotate(45deg);
+
+            background: #4f46e5;
+
+            color: white;
+        }
+
+
+        /* =================================
+           FOOTER
+        ================================= */
+
+        .footer-text {
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: #94a3b8;
+
+            font-size: 13px;
+        }
+
+
+        /* =================================
+           RESPONSIVE DESIGN
+        ================================= */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 15px;
+            }
+
+
+            .faq-container {
+                padding: 25px 18px;
+
+                border-radius: 20px;
+            }
+
+
+            .heading h1 {
+                font-size: 24px;
+            }
+
+
+            .question {
+                padding: 17px;
+
+                font-size: 14px;
+            }
+
+
+            .answer p {
+                padding: 0 17px 17px;
+
+                font-size: 14px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =================================
+         MAIN FAQ CONTAINER
+    ================================= -->
+
+    <div class="faq-container">
+
+
+        <!-- =================================
+             HEADER
+        ================================= -->
+
+        <div class="heading">
+
+            <div class="icon">
+                🎓
+            </div>
+
+            <h1>
+                College Fresher FAQ
+            </h1>
+
+            <p>
+                Quick answers to common questions for freshers
+            </p>
+
+        </div>
+
+
+        <!-- =================================
+             FAQ 1
+        ================================= -->
+
+        <div class="faq">
+
+            <div class="question">
+
+                <span>
+                    What should I know about the college campus?
+                </span>
+
+                <span class="plus">
+                    +
+                </span>
+
+            </div>
+
+
+            <div class="answer">
+
+                <p>
+                    Freshers should know the locations of
+                    classrooms, laboratories, library, canteen,
+                    administrative office, seminar halls and
+                    other important areas of the campus.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================
+             FAQ 2
+        ================================= -->
+
+        <div class="faq">
+
+            <div class="question">
+
+                <span>
+                    How can I contact faculty members if I have a doubt?
+                </span>
+
+                <span class="plus">
+                    +
+                </span>
+
+            </div>
+
+
+            <div class="answer">
+
+                <p>
+                    Students can contact the concerned faculty
+                    during college hours, after lectures, or
+                    through the official communication channels
+                    provided by the department.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================
+             FAQ 3
+        ================================= -->
+
+        <div class="faq">
+
+            <div class="question">
+
+                <span>
+                    What is the attendance requirement?
+                </span>
+
+                <span class="plus">
+                    +
+                </span>
+
+            </div>
+
+
+            <div class="answer">
+
+                <p>
+                    Students should regularly attend lectures,
+                    practicals and academic activities. The
+                    required minimum attendance depends on
+                    the rules of the college and university.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================
+             FAQ 4
+        ================================= -->
+
+        <div class="faq">
+
+            <div class="question">
+
+                <span>
+                    How can I find my classroom or laboratory?
+                </span>
+
+                <span class="plus">
+                    +
+                </span>
+
+            </div>
+
+
+            <div class="answer">
+
+                <p>
+                    Freshers can check their timetable,
+                    classroom notices or department information.
+                    They can also ask the class coordinator,
+                    faculty member or student coordinator.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================
+             FAQ 5
+        ================================= -->
+
+        <div class="faq">
+
+            <div class="question">
+
+                <span>
+                    How can I join college clubs and activities?
+                </span>
+
+                <span class="plus">
+                    +
+                </span>
+
+            </div>
+
+
+            <div class="answer">
+
+                <p>
+                    Students can join technical, cultural,
+                    sports, coding, photography and other
+                    student clubs. Club registrations are
+                    usually announced through official notices.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================
+             FAQ 6
+        ================================= -->
+
+        <div class="faq">
+
+            <div class="question">
+
+                <span>
+                    Where can I find the college timetable and notices?
+                </span>
+
+                <span class="plus">
+                    +
+                </span>
+
+            </div>
+
+
+            <div class="answer">
+
+                <p>
+                    Students can check the official college
+                    notice board, department announcements,
+                    student portal or other official
+                    communication channels for updates.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================
+             FAQ 7
+        ================================= -->
+
+        <div class="faq">
+
+            <div class="question">
+
+                <span>
+                    How does the internal assessment and examination system work?
+                </span>
+
+                <span class="plus">
+                    +
+                </span>
+
+            </div>
+
+
+            <div class="answer">
+
+                <p>
+                    Internal assessment may include unit tests,
+                    assignments, practicals, presentations and
+                    other academic activities. The exact system
+                    depends on the college and university rules.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================
+             FAQ 8
+        ================================= -->
+
+        <div class="faq">
+
+            <div class="question">
+
+                <span>
+                    Is there a library or study area on campus?
+                </span>
+
+                <span class="plus">
+                    +
+                </span>
+
+            </div>
+
+
+            <div class="answer">
+
+                <p>
+                    Most colleges provide a library with textbooks,
+                    reference books and study spaces. Freshers
+                    should check the library timings and borrowing
+                    rules from the library department.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================
+             FAQ 9
+        ================================= -->
+
+        <div class="faq">
+
+            <div class="question">
+
+                <span>
+                    What should I do if I miss a lecture or practical?
+                </span>
+
+                <span class="plus">
+                    +
+                </span>
+
+            </div>
+
+
+            <div class="answer">
+
+                <p>
+                    Students should contact the concerned faculty,
+                    collect the missed notes or study material,
+                    and complete any pending practical or
+                    assignment as soon as possible.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================
+             FAQ 10
+        ================================= -->
+
+        <div class="faq">
+
+            <div class="question">
+
+                <span>
+                    Who can I approach for help as a fresher?
+                </span>
+
+                <span class="plus">
+                    +
+                </span>
+
+            </div>
+
+
+            <div class="answer">
+
+                <p>
+                    Freshers can approach their faculty mentor,
+                    class coordinator, department office or
+                    student coordinator whenever they need
+                    academic or campus-related assistance.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================
+             FAQ 11
+        ================================= -->
+
+        <div class="faq">
+
+            <div class="question">
+
+                <span>
+                    Are there events and activities for first-year students?
+                </span>
+
+                <span class="plus">
+                    +
+                </span>
+
+            </div>
+
+
+            <div class="answer">
+
+                <p>
+                    Colleges may organize orientation programs,
+                    cultural events, technical competitions,
+                    workshops, sports activities and other
+                    events where freshers can participate.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================
+             FAQ 12
+        ================================= -->
+
+        <div class="faq">
+
+            <div class="question">
+
+                <span>
+                    What facilitie
+```
